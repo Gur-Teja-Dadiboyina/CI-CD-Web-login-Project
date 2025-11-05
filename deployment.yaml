@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: login-web
+  labels:
+    app: login-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: login-web
+  template:
+    metadata:
+      labels:
+        app: login-web
+    spec:
+      containers:
+        - name: login-web-container
+          # Replace this with your Docker Hub repo (e.g., yourname/login-web)
+          image: guruteja934/sample-web-login:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 15
+            periodSeconds: 20
